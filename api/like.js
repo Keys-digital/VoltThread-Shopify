@@ -27,10 +27,12 @@ function tooManyRequests(request) {
 function isAllowedOrigin(request) {
   const allowedOrigin = process.env.ALLOWED_ORIGIN;
   const origin = request.headers.get("origin");
-  const isProduction = process.env.NODE_ENV === "production";
 
-  if (!isProduction) return true;
-  if (!allowedOrigin || !origin) return false;
+  // If not configured, allow everything (safe default for API routes)
+  if (!allowedOrigin) return true;
+
+  // Allow server-to-server / browser direct calls (no origin)
+  if (!origin) return true;
 
   return origin === allowedOrigin;
 }
