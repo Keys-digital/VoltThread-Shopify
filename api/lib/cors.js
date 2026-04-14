@@ -1,20 +1,14 @@
 function getAllowedOrigin(requestOrigin) {
     const allowedOrigin = process.env.ALLOWED_ORIGIN;
-    const isProduction = process.env.NODE_ENV === "production";
 
-    if (!allowedOrigin) {
-        if (isProduction) {
-            throw new Error("ALLOWED_ORIGIN must be set in production");
-        }
+    // If not set, allow everything (dev-safe, Shopify-safe fallback)
+    if (!allowedOrigin) return requestOrigin || "*";
 
-        return "*";
-    }
+    // If no origin (browser direct test / curl), allow but don't break API
+    if (!requestOrigin) return allowedOrigin;
 
-    if (!requestOrigin) {
-        return isProduction ? "null" : allowedOrigin;
-    }
-
-    return requestOrigin === allowedOrigin ? requestOrigin : "null";
+    // Allow only configured origin
+    return requestOrigin === allowedOrigin ? requestOrigin : allowedOrigin;
 }
 
 export function corsHeaders(requestOrigin) {
