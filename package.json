@@ -1,0 +1,15 @@
+{
+  "name": "voltthread-shopify-engagement-api",
+  "version": "1.0.0",
+  "description": "API for blog engagement (likes, shares, etc.) for Shopify",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@shopify/shopify-api": "^11.11.0",
+    "@upstash/redis": "^1.37.0"
+  }
+}

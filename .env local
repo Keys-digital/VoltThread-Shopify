@@ -1,0 +1,5 @@
+SHOPIFY_STORE_DOMAIN=voltthread-2.myshopify.com
+SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxx
+ALLOWED_ORIGIN=https://voltthread-2.myshopify.com
+
+DEV_MODE=true
