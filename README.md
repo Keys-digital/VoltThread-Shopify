@@ -1,9 +1,11 @@
-VoltThread Shopify Engagement API
+# VoltThread Shopify Engagement API
 
-Vercel serverless API for Shopify article likes and shares, powered by Shopify metafields.
+Vercel serverless API for Shopify article engagement (likes & shares), powered by Upstash for fast, atomic counters.
 
-📦 Endpoints
-🔹 Likes API
+
+## Endpoints
+
+### Likes API
 GET /api/like?articleId=123456789
 
 Returns:
@@ -24,7 +26,8 @@ Unlike an article:
   "articleId": "123456789",
   "action": "unlike"
 }
-🔹 Shares API
+
+### Shares API
 GET /api/engagement?articleId=123456789
 
 Returns:
@@ -49,51 +52,91 @@ copy
 whatsapp
 facebook
 twitter
-🧱 Data Storage (Shopify Metafields)
 
-All values are stored as integers under the custom namespace:
+### Data Storage
+Primary storage: Upstash Redis
 
-custom.total_likes
-custom.copy_shares
-custom.whatsapp_shares
-custom.facebook_shares
-custom.twitter_shares
-custom.total_shares
-⚙️ Environment Variables
+Redis keys:
+
+article:{articleId}:likes
+article:{articleId}:shares
+
+Examples:
+
+article:123456789:likes
+article:123456789:shares
+
+ ### Share hash structure
+
+Stored as Redis hash fields:
+
+copy
+whatsapp
+facebook
+twitter
+
+Total shares are computed as:
+
+copy + whatsapp + facebook + twitter
+
+
+## Environment Variables
+UPSTASH_REDIS_REST_URL=your_upstash_redis_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
+ALLOWED_ORIGIN=https://your-storefront-domain.com
+Optional (future Shopify sync)
 SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
 SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxx
-ALLOWED_ORIGIN=https://your-storefront-domain.com
-🚀 What this gives you
-GET /api/like → fetch total likes
-POST /api/like → increment/decrement likes
-GET /api/engagement → fetch share counts
-POST /api/engagement → increment share counts
-All data is persisted in Shopify article metafields
-⚠️ Important Notes
-This is a basic counter API — it does NOT prevent abuse.
-You should keep frontend protection (e.g. localStorage) to prevent repeated likes from the same user.
+
+✨ What this gives you
+⚡ Fast like & share tracking
+🔒 Atomic Redis updates (no race conditions)
+📊 Real-time engagement counters
+🚀 Better performance than Shopify metafields
+🧠 Safe under concurrent traffic
+
+
+## Important Notes
+Redis ensures atomic updates
+Frontend safeguards (like localStorage) still help reduce spam clicks
+CORS is not security
 For production-grade protection, consider:
-IP rate limiting
-user authentication
-signed requests
-📁 Project Structure
+Redis-based rate limiting (already implemented)
+Request signing (optional)
+Authentication layer (if needed)
+
+
+## Project Structure
 api/
-  like.js          # Likes endpoint
-  engagement.js    # Shares endpoint
+  like.js              # Likes endpoint
+  engagement.js        # Shares endpoint
 
 lib/
-  shopify.js       # Shopify GraphQL logic
-  cors.js          # CORS helpers
-🧪 Local Development
+  cors.js              # CORS helpers
+  redis.js             # Upstash Redis client
+  rate-limit.js        # Rate limiting logic
+  shopify.js           # Optional Shopify sync
+
+
+## Local Development
+
+
+Install dependencies:
+
 npm install
+
+Run locally:
+
 vercel dev
-🚀 Deployment Steps
+
+## Deployment Steps
 Push code to GitHub
 Import repo into Vercel
 Add environment variables
 Deploy
-Use your Vercel URL in Shopify theme JS
-🔌 Frontend Integration (Example)
+Connect API to Shopify theme
+
+## Frontend Usage
 Like
 fetch("/api/like", {
   method: "POST",
@@ -113,8 +156,13 @@ fetch("/api/engagement", {
     channel: "whatsapp"
   })
 });
+## Next Improvements
+Connect API to Shopify theme UI
+Replace local counters fully with Redis-backed system
+Add analytics dashboard endpoints
+Optional: sync Redis → Shopify metafields
+Optional: add auth for admin analytics
 
-🔄 Next Steps
-Connect this API to your Shopify theme
-Replace localStorage-only counts with API-backed counts
-Optionally add caching (Redis / Edge Config) for performance
+## Summary
+
+This API provides a fast, scalable engagement system for Shopify, replacing fragile client-side counters with a Redis-backed atomic system ready for production traffic.
