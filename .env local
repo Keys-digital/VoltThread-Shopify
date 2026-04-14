@@ -1,8 +1,0 @@
-SHOPIFY_STORE_DOMAIN=voltthread-2.myshopify.com
-SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxx
-ALLOWED_ORIGIN=https://voltthread-2.myshopify.com
-
-UPSTASH_REDIS_REST_URL=redis-cli --tls -u redis://default:gQAAAAAAAX8iAAIncDFjZDUyYTU5ZTQxZWU0ZDAzOWJiMTZkMDZiNjM5YTRlYnAxOTgwODI@apparent-burro-98082.upstash.io:6379
-UPSTASH_REDIS_REST_TOKEN=gQAAAAAAAX8iAAIncDFjZDUyYTU5ZTQxZWU0ZDAzOWJiMTZkMDZiNjM5YTRlYnAxOTgwODI
-
-DEV_MODE=true
