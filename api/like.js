@@ -1,6 +1,6 @@
-import { jsonResponse, optionsResponse } from "../lib/cors.js";
-import { getClientIp, checkRateLimit } from "../lib/rate-limit.js";
-import { redis } from "../lib/redis.js";
+import { jsonResponse, optionsResponse } from "./lib/cors.js";
+import { getClientIp, checkRateLimit } from "./lib/rate-limit.js";
+import { redis } from "./lib/redis.js";
 
 function badRequest(request, message) {
   return jsonResponse(request, { success: false, message }, 400);
